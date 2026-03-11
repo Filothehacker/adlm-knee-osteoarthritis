@@ -1,0 +1,97 @@
+
+{"VARIABLES":{                                                                                                                                             
+    "cartilage_morphology": [                                                                                                                   
+      "V00MCMPM", "V00MCMPL",
+      "V00MCMFMA", "V00MCMFLA",                                                                                                                 
+      "V00MCMFMC", "V00MCMFLC",
+      "V00MCMFMP", "V00MCMFLP",                                                                                                                 
+      "V00MCMTMA", "V00MCMTLA",
+      "V00MCMTMC", "V00MCMTLC",
+      "V00MCMTMP", "V00MCMTLP"
+    ],
+    "bone_marrow_lesions": {
+      "bml_size": [
+        "V00MBMSFMA", "V00MBMSFLA",
+        "V00MBMSFMC", "V00MBMSFLC",
+        "V00MBMSFMP", "V00MBMSFLP",
+        "V00MBMSTMA", "V00MBMSTLA",
+        "V00MBMSTMC", "V00MBMSTLC",
+        "V00MBMSTMP", "V00MBMSTLP",
+        "V00MBMSPM", "V00MBMSPL",
+        "V00MBMSSS"
+      ],
+      "bml_number": [
+        "V00MBMNFMA", "V00MBMNFLA",
+        "V00MBMNFMC", "V00MBMNFLC",
+        "V00MBMNFMP", "V00MBMNFLP",
+        "V00MBMNTMA", "V00MBMNTLA",
+        "V00MBMNTMC", "V00MBMNTLC",
+        "V00MBMNTMP", "V00MBMNTLP",
+        "V00MBMNPM", "V00MBMNPL",
+        "V00MBMNSS"
+      ],
+      "bml_pct_edema_vs_cyst": [
+        "V00MBMPFMA", "V00MBMPFLA",
+        "V00MBMPFMC", "V00MBMPFLC",
+        "V00MBMPFMP", "V00MBMPFLP",
+        "V00MBMPTMA", "V00MBMPTLA",
+        "V00MBMPTMC", "V00MBMPTLC",
+        "V00MBMPTMP", "V00MBMPTLP",
+        "V00MBMPPM", "V00MBMPPL",
+        "V00MBMPSS"
+      ]
+    },
+    "meniscal_morphology": {
+      "tear_type": [
+        "V00MMTMA", "V00MMTMB", "V00MMTMP",
+        "V00MMTLA", "V00MMTLB", "V00MMTLP"
+      ],
+      "signal_abnormality": [
+        "V00MMSMA", "V00MMSMB", "V00MMSMP",
+        "V00MMSLA", "V00MMSLB", "V00MMSLP"
+      ],
+      "hypertrophy": [
+        "V00MMHMA", "V00MMHMB", "V00MMHMP",
+        "V00MMHLA", "V00MMHLB", "V00MMHLP"
+      ],
+      "posterior_root_tear": [
+        "V00MMRTM", "V00MMRTL"
+      ],
+      "extrusion": [
+        "V00MMXMM", "V00MMXMA", "V00MMXLA", "V00MMXLL"
+      ]
+    },
+    "osteophytes": [
+      "V00MOSPS", "V00OSPI", "V00OSPM", "V00MOSPL",
+      "V00MOSFMA", "V00MOSFMC", "V00MOSFMP",
+      "V00MOSFLA", "V00MOSFLC", "V00MOSFLP",
+      "V00MOSTM", "V00MOSTL"
+    ],
+    "synovitis_effusion": [
+      "V00MSYIC",
+      "V00MEFFWK"
+    ],
+    "ligaments_extraarticular": {
+      "acl": [
+        "V00MACLTR", "V00MACLBML", "V00MACLRP"
+      ],
+      "pcl": [
+        "V00MPCLTR", "V00MPCLBML", "V00MPCLRP"
+      ],
+      "patellar_tendon": [
+        "V00MPTSIG"
+      ],
+      "ganglion_cysts": [
+        "V00MGCACL", "V00MGCPCL", "V00MGCTIB",
+        "V00MGCSM", "V00MGSST", "V00MGCOTH"
+      ],
+      "bursae": [
+        "V00MANSBUR", "V00MIPBUR", "V00MPPBUR"
+      ],
+      "other": [
+        "V00MPOPCYS",
+        "V00MITBSIG"
+      ]
+    }
+  }
+}
