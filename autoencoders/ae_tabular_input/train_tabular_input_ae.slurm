@@ -32,6 +32,6 @@ echo
 echo "STARTING TABULAR-INPUT AE TRAINING"
 echo "Running ae_tabular_input/train.py..."
 
-python ae_tabular_input/train.py
+python autoencoders/ae_tabular_input/train.py
 
 echo "Training DONE"

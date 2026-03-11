@@ -31,6 +31,6 @@ cd /vol/miltank/users/$USER/git/adlm-knee-osteoarthritis
 echo "STARTING PAIN-SUPERVISED AE TRAINING"
 echo "Running ae_pain.train..."
 
-python ae_pain/train.py
+python autoencoders/ae_pain/train.py
 
 echo "Training DONE"

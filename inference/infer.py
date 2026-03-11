@@ -8,6 +8,10 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if PROJECT_ROOT not in sys.path:
     sys.path.append(PROJECT_ROOT)
 
+AUTOENCODERS_DIR = os.path.join(PROJECT_ROOT, "autoencoders")
+if AUTOENCODERS_DIR not in sys.path:
+    sys.path.append(AUTOENCODERS_DIR)
+
 from inference.data import iter_mri_dataset
 from typing import Literal
 

@@ -31,6 +31,6 @@ cd /vol/miltank/users/$USER/Documents/adlm-knee-osteoarthritis
 echo "STARTING TABULAR-INPUT AE RECONSTRUCTION"
 echo "Running tabular_input_inference/reconstruction.py..."
 
-python tabular_input_inference/reconstruction.py
+python autoencoders_results/tabular_input_inference/reconstruction.py
 
 echo "Reconstruction DONE"

@@ -34,6 +34,6 @@ echo
 
 echo "STARTING TRAINING JOB"
 echo "Running train.py..."
-python ae_filippo/train.py
+python autoencoders/ae_filippo/train.py
 
 echo "Training DONE"

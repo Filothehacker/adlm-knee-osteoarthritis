@@ -8,6 +8,13 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if PROJECT_ROOT not in sys.path:
     sys.path.append(PROJECT_ROOT)
 
+REPO_ROOT = os.path.dirname(PROJECT_ROOT)
+AUTOENCODERS_DIR = os.path.join(REPO_ROOT, "autoencoders")
+if REPO_ROOT not in sys.path:
+    sys.path.append(REPO_ROOT)
+if AUTOENCODERS_DIR not in sys.path:
+    sys.path.append(AUTOENCODERS_DIR)
+
 from ae_tabular_input.model import AutoencoderWithTabularInput, Autoencoder3D
 from ae_tabular_input.dataset import KneeMRITabularDataset
 
