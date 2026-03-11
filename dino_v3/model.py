@@ -23,7 +23,7 @@ class DINOv3MRI(nn.Module):
       1. Repeat the single grayscale channel 3× -> [D, 3, H, W]
       2. Pass every slice through the ViT in one batched forward pass.
       3. Extract the [CLS] token for each slice -> [D, embed_dim]
-      4. Mean-pool across slices -> [embed_dim] patient feature vector.
+      4. Max-pool across slices -> [embed_dim] patient feature vector.
 
     This is equivalent to treating depth slices as an "ensemble" of 2D views,
     which is standard practice when applying 2D ViTs to 3D medical volumes.
@@ -51,7 +51,7 @@ class DINOv3MRI(nn.Module):
         cls_tokens = self.backbone(slices)
 
         # [B*D, embed_dim] -> [B, D, embed_dim] -> [B, embed_dim]
-        features = cls_tokens.reshape(B, D, -1).mean(dim=1)
+        features = cls_tokens.reshape(B, D, -1).max(dim=1).values
         return features
 
 

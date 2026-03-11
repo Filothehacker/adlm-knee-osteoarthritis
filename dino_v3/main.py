@@ -157,3 +157,17 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+'''
+  1. Input: [1, 1, 160, 224, 224] — one patient's full 3D volume                                                    
+  2. Unbatch slices: reshape to [160, 3, 224, 224] — 160 independent 2D images
+     (The 3 is the RGB channels — DINOv3 was pretrained on natural images so it expects 3-channel input. Since MRI      
+      slices are grayscale, we just repeat the single channel 3 times)                                    
+  3. 2D ViT forward: backbone processes all 160 slices → [160, 768] CLS tokens                                      
+  4. Max-pool: .max(dim=1).values → [768] — for each of the 768 feature dimensions, keep the highest activation     
+  across all slices 
+  the CLS token is a single [768]-dim vector that summarizes the whole slice — that's the whole point of   
+  the CLS token in ViT: it aggregates global information from all 196 patch tokens via self-attention. So per slice 
+  you get one [768] vector, and after max-pooling across 160 slices you get one [768] vector per patient.                                                                                                
+  5. Output: one [768]-dim vector per patient representing "the most activated response" seen anywhere in the volume
+  
+  '''

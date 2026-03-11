@@ -15,7 +15,7 @@ Usage:
       --weights_path weights_dinov3/dinov3_vitb16_pretrain_lvd1689m.pth \
       --patient_id <id> \
       --side left \
-      [--n_slices 16]          # how many evenly-spaced slices to show
+      [--n_slices 16]          # how many top max-pool winning slices to show
       [--output_dir dino_v3_results/attention_maps]
 """
 
@@ -113,8 +113,20 @@ def visualize_patient(
         return
 
     D = vol.shape[1]
-    # Pick n_slices evenly spaced across the depth dimension
-    slice_indices = np.linspace(0, D - 1, n_slices, dtype=int)
+
+    # Find the slices that contribute most to the max-pooled feature vector.
+    # Run all D slices through the backbone to get CLS tokens: [D, embed_dim]
+    print("Finding max-pool winning slices ...")
+    all_slices = vol[0].unsqueeze(1).expand(-1, 3, -1, -1).to(device)  # [D, 3, 224, 224]
+    with torch.no_grad():
+        all_cls = backbone(all_slices)  # [D, embed_dim]
+
+    # For each feature dim, which slice had the max? Count wins per slice.
+    winning_indices = all_cls.argmax(dim=0).cpu().numpy()  # [embed_dim]
+    counts = np.bincount(winning_indices, minlength=D)     # [D]
+
+    # Top n_slices by win count, sorted back to anatomical order
+    slice_indices = np.sort(np.argsort(counts)[::-1][:n_slices])
 
     os.makedirs(output_dir, exist_ok=True)
 
