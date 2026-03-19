@@ -40,7 +40,7 @@ import torch
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from ae_filippo.data import load_single_patient_mri
-from dino_v3.model import build_dino_model
+from dino_v3.model import build_volumetric_model
 
 # ViT-B/16 on 224×224: 14×14 = 196 patch tokens
 PATCH_GRID = 14
@@ -97,7 +97,7 @@ def visualize_patient(
     output_dir: str,
 ):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = build_dino_model(weights_path=weights_path, device=device)
+    model = build_volumetric_model(weights_path=weights_path, device=device)
     backbone = model.backbone
 
     # Register hook on last block's attention module
@@ -190,14 +190,14 @@ def visualize_patient(
 
 def main():
     parser = argparse.ArgumentParser(description="DINOv3 attention map visualizer")
-    parser.add_argument("--data_root", type=str, required=True)
+    parser.add_argument("--data_root", type=str, default="data/baseline")
     parser.add_argument(
         "--weights_path",
         type=str,
         default="weights_dinov3/dinov3_vitb16_pretrain_lvd1689m.pth",
     )
-    parser.add_argument("--patient_id", type=str, required=True,
-                        help="Patient ID to visualize (e.g. 9002316)")
+    parser.add_argument("--patient_id", type=str, default="9000296",
+                        help="Patient ID to visualize (e.g. 9000296)")
     parser.add_argument("--side", type=str, choices=["left", "right"], default="left")
     parser.add_argument("--n_slices", type=int, default=16,
                         help="Number of evenly-spaced slices to visualise")

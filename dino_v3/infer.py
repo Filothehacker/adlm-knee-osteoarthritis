@@ -17,7 +17,7 @@ import numpy as np
 import torch
 
 from dino_v3.data import iter_mri_dataset
-from dino_v3.model import build_dino_model
+from dino_v3.model import build_volumetric_model
 
 
 def run_inference(
@@ -39,7 +39,7 @@ def run_inference(
         Path to the saved .npz file.
     """
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = build_dino_model(weights_path=weights_path, device=device)
+    model = build_volumetric_model(weights_path=weights_path, device=device)
 
     print(f"[{side}] Streaming MRIs from {data_root} ...")
 
