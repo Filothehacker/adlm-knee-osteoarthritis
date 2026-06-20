@@ -225,3 +225,5 @@ CLAUDE.md
 adlm-knee-osteoarthritis.code-workspace
 csv/
 dino_v3_results/
+graphify-out/
+autoencoders/graphify-out/

@@ -215,28 +215,85 @@ class VolumetricDINOv3(nn.Module):
 
 
 def build_volumetric_model(
-    weights_path: str, device: torch.device
+    weights_path: str, device: torch.device, tmp_dir: str | None = None
 ) -> VolumetricDINOv3:
     """
-    Build and return a :class:`VolumetricDINOv3` model loaded from local weights.
+    Build and return a :class:`VolumetricDINOv3` model loaded from local or
+    GCS weights.
 
     Parameters
     ----------
     weights_path : str
-        Path to the pretrained ViT-B/16 weights file, e.g.
-        ``weights_dinov3/dinov3_vitb16_pretrain_lvd1689m.pth``.
+        Local file path **or** a ``gs://bucket/blob`` URI pointing to the
+        pretrained ViT-B/16 ``.pth`` weights file, e.g.
+        ``gs://koa-thesis-oai-data/weights/dinov3_vitb16_pretrain_lvd1689m.pth``.
     device : torch.device
         Target device.
+    tmp_dir : str, optional
+        Scratch directory for temporary GCS checkpoint downloads.  Defaults to
+        ``TMPDIR`` when set.
 
     Returns
     -------
     VolumetricDINOv3
         Model in eval mode on the requested device.
+
+    Raises
+    ------
+    FileNotFoundError
+        If ``weights_path`` is a local path that does not exist, or if the
+        GCS blob does not exist in the specified bucket.
     """
     from dinov3.hub.backbones import dinov3_vitb16
 
     print(f"Loading DINOv3 ViT-B/16 weights from {weights_path} ...")
-    backbone = dinov3_vitb16(pretrained=True, weights=weights_path)
+
+    if isinstance(weights_path, str) and weights_path.startswith("gs://"):
+        import tempfile
+        from google.cloud import storage as gcs
+        from google.cloud.exceptions import NotFound
+
+        without_scheme = weights_path[len("gs://"):]
+        bucket_name, blob_name = without_scheme.split("/", 1)
+        client = gcs.Client()
+        blob = client.bucket(bucket_name).blob(blob_name)
+
+        try:
+            blob.reload()  # raises NotFound if blob does not exist
+        except NotFound:
+            raise FileNotFoundError(
+                f"GCS weights blob not found: {weights_path}"
+            )
+
+        suffix = os.path.splitext(blob_name)[-1] or ".pth"
+        if tmp_dir is not None:
+            os.makedirs(tmp_dir, exist_ok=True)
+        tmp = tempfile.NamedTemporaryFile(
+            suffix=suffix,
+            delete=False,
+            dir=tmp_dir or os.environ.get("TMPDIR"),
+        )
+        tmp.close()  # close our handle so download_to_filename can write cleanly
+        try:
+            blob.download_to_filename(tmp.name)
+            resolved_path = tmp.name
+        except Exception:
+            os.unlink(tmp.name)
+            raise
+    else:
+        if not os.path.exists(weights_path):
+            raise FileNotFoundError(
+                f"Local weights file not found: {weights_path}"
+            )
+        resolved_path = weights_path
+        tmp = None
+
+    try:
+        backbone = dinov3_vitb16(pretrained=True, weights=resolved_path)
+    finally:
+        if tmp is not None:
+            os.unlink(tmp.name)
+
     backbone = backbone.to(device)
     backbone.eval()
 
